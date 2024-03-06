@@ -28,7 +28,7 @@ export default function RootLayout({
       <html lang="en" suppressHydrationWarning>
         <body className={openSans.className}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <Toaster />
+            <Toaster position="bottom-center" richColors/>
             <ModalProvider />
             {children}
           </ThemeProvider>
