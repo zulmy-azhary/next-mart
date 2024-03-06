@@ -51,9 +51,9 @@ export const StoreNav: React.FC<StoreNavProps> = (props) => {
           aria-expanded={open}
           className={cn("w-[200px] justify-between", className)}
         >
-          <MdStorefront className="mr-2 h-4 w-4" />
+          <MdStorefront className="mr-2 size-4" />
           {currentStore?.label}
-          <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+          <CaretSortIcon className="ml-auto size-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
@@ -68,10 +68,10 @@ export const StoreNav: React.FC<StoreNavProps> = (props) => {
                   value={store.value}
                   onSelect={() => onStoreSelect(store)}
                 >
-                  <MdStorefront className="mr-2 h-4 w-4" />
+                  <MdStorefront className="mr-2 size-4" />
                   {store.label}
                   {currentStore?.value === store.value ? (
-                    <CheckIcon className="ml-auto h-4 w-4" />
+                    <CheckIcon className="ml-auto size-4" />
                   ) : null}
                 </CommandItem>
               ))}
@@ -86,7 +86,7 @@ export const StoreNav: React.FC<StoreNavProps> = (props) => {
                   onOpen();
                 }}
               >
-                <PlusCircledIcon className="mr-2 h-5 w-5" />
+                <PlusCircledIcon className="mr-2 size-4" />
                 Create Store
               </CommandItem>
             </CommandGroup>
