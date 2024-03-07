@@ -6,9 +6,13 @@ import { useParams, usePathname } from "next/navigation";
 
 type MainNavProps = React.ComponentProps<"nav">;
 
+const isActive = (pathname: string, id: string | string[], path?: string) => {
+  return path ? pathname === `/${id}/${path}` || pathname.includes(path) : pathname === `/${id}`;
+};
+
 export const MainNav: React.FC<MainNavProps> = (props) => {
   const { className, ...rest } = props;
-  
+
   const pathname = usePathname();
   const params = useParams();
 
@@ -16,21 +20,53 @@ export const MainNav: React.FC<MainNavProps> = (props) => {
     {
       href: `/${params.storeId}`,
       label: "Overview",
-      active: pathname === `/${params.storeId}`,
+      active: isActive(pathname, params.storeId),
     },
     {
       href: `/${params.storeId}/billboards`,
       label: "Billboards",
-      active: pathname === `/${params.storeId}/billboards`,
+      active: isActive(pathname, params.storeId, "billboards"),
+    },
+    {
+      href: `/${params.storeId}/categories`,
+      label: "Categories",
+      active: isActive(pathname, params.storeId, "categories"),
+    },
+    {
+      href: `/${params.storeId}/colors`,
+      label: "Colors",
+      active: isActive(pathname, params.storeId, "colors"),
+    },
+    {
+      href: `/${params.storeId}/sizes`,
+      label: "Sizes",
+      active: isActive(pathname, params.storeId, "sizes"),
+    },
+    {
+      href: `/${params.storeId}/products`,
+      label: "Products",
+      active: isActive(pathname, params.storeId, "products"),
+    },
+    {
+      href: `/${params.storeId}/orders`,
+      label: "Orders",
+      active: isActive(pathname, params.storeId, "orders"),
     },
     {
       href: `/${params.storeId}/settings`,
       label: "Settings",
-      active: pathname === `/${params.storeId}/settings`,
+      active: isActive(pathname, params.storeId, "settings"),
     },
   ];
+
   return (
-    <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)} {...rest}>
+    <nav
+      className={cn(
+        "flex flex-col gap-y-4 lg:flex-row items-start lg:items-center lg:gap-x-4 xl:gap-x-6",
+        className
+      )}
+      {...rest}
+    >
       {routes.map((route) => (
         <Link
           key={route.href}
