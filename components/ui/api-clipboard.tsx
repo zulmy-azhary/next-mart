@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
-type ApiClipboard = {
+type ApiClipboardProps = {
   title: string;
   text: string;
   variant: "public" | "admin";
@@ -13,14 +13,14 @@ type ApiClipboard = {
 const badgeOptions = {
   public: "Public",
   admin: "Admin",
-} satisfies Record<ApiClipboard["variant"], "Public" | "Admin">;
+} satisfies Record<ApiClipboardProps["variant"], "Public" | "Admin">;
 
 const variantOptions = {
   public: "success",
   admin: "default",
-} satisfies Record<ApiClipboard["variant"], React.ComponentProps<typeof Badge>["variant"]>;
+} satisfies Record<ApiClipboardProps["variant"], React.ComponentProps<typeof Badge>["variant"]>;
 
-export const ApiClipboard: React.FC<ApiClipboard> = (props) => {
+export const ApiClipboard: React.FC<ApiClipboardProps> = (props) => {
   const { title, text, variant = "public" } = props;
 
   const onCopy = (text: string) => {
