@@ -16,6 +16,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { DeleteStoreModal } from "./delete-store-modal";
+import { Section, SectionContent, SectionHeader } from "@/components/ui/section";
 
 type SettingsFormProps = {
   store: Store;
@@ -36,7 +37,6 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ store }) => {
       setLoading(true);
       await axios.delete(`/api/stores/${store.id}`);
       router.refresh();
-      router.push("/");
       toast.success("Store deleted.");
     } catch (error) {
       toast.error((error as Error).message);
@@ -59,37 +59,39 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ store }) => {
   });
 
   return (
-    <section className="flex flex-col gap-y-8">
-      <div className="flex justify-between items-center">
+    <Section>
+      <SectionHeader>
         <Heading title="Settings" description="Manage store settings and preferences" />
         <DeleteStoreModal
           title="Delete Store"
           description="Are you sure you want to delete this store? This action cannot be undone."
           onClick={onDelete}
         />
-      </div>
+      </SectionHeader>
       <Separator />
-      <Form {...form}>
-        <form onSubmit={onSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <FormInput
-              control={form.control}
-              name="name"
-              label="Store Name"
-              placeholder="e.g. My Store"
-              isLoading={isLoading}
-            />
-          </div>
-          <Button type="submit" disabled={isLoading}>
-            Save Changes
-          </Button>
-        </form>
-      </Form>
-      <ApiClipboard
-        title="PUBLIC API URL"
-        variant="public"
-        text={`${process.env.NEXT_PUBLIC_API_URL}/api/${store.id}`}
-      />
-    </section>
+      <SectionContent>
+        <Form {...form}>
+          <form onSubmit={onSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <FormInput
+                control={form.control}
+                name="name"
+                label="Store Name"
+                placeholder="e.g. My Store"
+                isLoading={isLoading}
+              />
+            </div>
+            <Button type="submit" variant="primary" disabled={isLoading}>
+              Save Changes
+            </Button>
+          </form>
+        </Form>
+        <ApiClipboard
+          title="PUBLIC API URL"
+          variant="public"
+          text={`${process.env.NEXT_PUBLIC_API_URL}/api/${store.id}`}
+        />
+      </SectionContent>
+    </Section>
   );
 };
