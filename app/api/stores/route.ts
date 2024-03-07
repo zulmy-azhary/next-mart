@@ -3,7 +3,7 @@ import { storeSchema } from "@/schemas/store";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
-export const POST = async (req: Request, res: Response) => {
+export const POST = async (req: Request) => {
   const validatedFields = await storeSchema.safeParseAsync(await req.json());
 
   if (!validatedFields.success) {
@@ -27,6 +27,7 @@ export const POST = async (req: Request, res: Response) => {
 
     return NextResponse.json(store);
   } catch (error) {
+    console.log("[POST] STORES =", error);
     return new NextResponse((error as Error).message, { status: 500 });
   }
 };
