@@ -48,6 +48,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ store }) => {
   const onSubmit = form.handleSubmit(async (values) => {
     try {
       setLoading(true);
+      if (values.name === store.name) {
+        throw new Error("Store is already updated.");
+      }
       await axios.patch(`/api/stores/${store.id}`, values);
       router.refresh();
       toast.success("Store updated.");
@@ -81,7 +84,11 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ store }) => {
                 isLoading={isLoading}
               />
             </div>
-            <Button type="submit" variant="primary" disabled={isLoading}>
+            <Button
+              type="submit"
+              variant="primary"
+              disabled={isLoading || form.getValues().name === store.name}
+            >
               Save Changes
             </Button>
           </form>
