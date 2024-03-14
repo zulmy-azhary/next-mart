@@ -3,7 +3,7 @@ import type { Params } from "@/types";
 import { auth } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { SettingsForm } from "./components/settings-form";
+import { SettingsForm } from "./_components/settings-form";
 
 export const metadata: Metadata = {
   title: "Settings",
@@ -18,7 +18,7 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
     redirect("/sign-in");
   }
 
-  const store = await db.store.findFirst({
+  const store = await db.store.findUnique({
     where: {
       id: params.storeId,
       userId,
