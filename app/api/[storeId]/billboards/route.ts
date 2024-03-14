@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { billboardSchema } from "@/schemas/billboard";
-import { Params } from "@/types";
+import type { Params } from "@/types";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
@@ -27,7 +27,7 @@ export const POST = async (req: Request, { params }: Params<{ storeId: string }>
     });
 
     if (!storeByUserId) {
-      return new NextResponse("Acess denied.", { status: 403 });
+      return new NextResponse("Access denied.", { status: 403 });
     }
 
     const billboard = await db.billboard.create({
