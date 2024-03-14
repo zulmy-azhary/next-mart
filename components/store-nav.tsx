@@ -17,6 +17,7 @@ import { useState } from "react";
 import { useStoreModal } from "@/store/modal";
 import { useParams, useRouter } from "next/navigation";
 import { MdStorefront } from "react-icons/md";
+import { useToggle } from "@/providers/toggle.provider";
 
 type StoreNavProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger> & {
   stores: Record<string, any>[];
@@ -24,7 +25,8 @@ type StoreNavProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger> & {
 
 export const StoreNav: React.FC<StoreNavProps> = (props) => {
   const { className, stores = [] } = props;
-  
+
+  const { onClose } = useToggle();
   const { onOpen } = useStoreModal();
   const [open, setOpen] = useState(false);
   const params = useParams();
@@ -42,6 +44,12 @@ export const StoreNav: React.FC<StoreNavProps> = (props) => {
     router.push(`/${store.value}`);
   };
 
+  const onCreateStore = () => {
+    onClose();
+    setOpen(false);
+    onOpen();
+  };
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -49,7 +57,7 @@ export const StoreNav: React.FC<StoreNavProps> = (props) => {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={cn("w-[200px] justify-between", className)}
+          className={cn("w-full lg:w-[200px] justify-between", className)}
         >
           <MdStorefront className="mr-2 size-4" />
           {currentStore?.label}
@@ -81,10 +89,7 @@ export const StoreNav: React.FC<StoreNavProps> = (props) => {
           <CommandList>
             <CommandGroup>
               <CommandItem
-                onSelect={() => {
-                  setOpen(false);
-                  onOpen();
-                }}
+                onSelect={onCreateStore}
               >
                 <PlusCircledIcon className="mr-2 size-4" />
                 Create Store

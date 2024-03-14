@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { useToggle } from "@/providers/toggle.provider";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 
@@ -13,6 +14,7 @@ const isActive = (pathname: string, id: string | string[], path?: string) => {
 export const MainNav: React.FC<MainNavProps> = (props) => {
   const { className, ...rest } = props;
 
+  const { onClose } = useToggle();
   const pathname = usePathname();
   const params = useParams();
 
@@ -26,31 +28,6 @@ export const MainNav: React.FC<MainNavProps> = (props) => {
       href: `/${params.storeId}/billboards`,
       label: "Billboards",
       active: isActive(pathname, params.storeId, "billboards"),
-    },
-    {
-      href: `/${params.storeId}/categories`,
-      label: "Categories",
-      active: isActive(pathname, params.storeId, "categories"),
-    },
-    {
-      href: `/${params.storeId}/colors`,
-      label: "Colors",
-      active: isActive(pathname, params.storeId, "colors"),
-    },
-    {
-      href: `/${params.storeId}/sizes`,
-      label: "Sizes",
-      active: isActive(pathname, params.storeId, "sizes"),
-    },
-    {
-      href: `/${params.storeId}/products`,
-      label: "Products",
-      active: isActive(pathname, params.storeId, "products"),
-    },
-    {
-      href: `/${params.storeId}/orders`,
-      label: "Orders",
-      active: isActive(pathname, params.storeId, "orders"),
     },
     {
       href: `/${params.storeId}/settings`,
@@ -75,6 +52,7 @@ export const MainNav: React.FC<MainNavProps> = (props) => {
             "text-sm font-medium transition-colors hover:text-primary",
             route.active ? "text-black dark:text-white" : "text-muted-foreground"
           )}
+          onClick={onClose}
         >
           {route.label}
         </Link>
