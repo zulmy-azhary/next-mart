@@ -19,7 +19,7 @@ export const BillboardsSection: React.FC<BillboardsSectionProps> = ({ billboards
   return (
     <Section>
       <SectionHeader>
-        <Heading title="Billboards (0)" description="Manage billboards for your store" />
+        <Heading title={`Billboards (${billboards.length})`} description="Manage billboards for your store" />
         <Button variant="primary" asChild>
           <Link href={`/${storeId}/billboards/create`}>
             {" "}
@@ -29,7 +29,9 @@ export const BillboardsSection: React.FC<BillboardsSectionProps> = ({ billboards
         </Button>
       </SectionHeader>
       <Separator />
-      <SectionContent>This is billboards page.</SectionContent>
+      <SectionContent>
+        This is billboards page.
+      </SectionContent>
     </Section>
   );
 };
