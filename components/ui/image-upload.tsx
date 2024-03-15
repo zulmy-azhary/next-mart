@@ -55,7 +55,7 @@ export const ImageUpload = forwardRef<HTMLButtonElement, ImageUploadProps>((prop
             <LuTrash className="size-4" />
           </Button>
         </div>
-        <Image fill priority className="object-cover" sizes="auto" src={url} alt="Image upload" />
+        <Image fill priority className="object-cover select-none" sizes="auto" src={url} alt="Image upload" />
       </div>
     </div>
   ) : (
