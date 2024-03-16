@@ -1,7 +1,7 @@
 "use client";
 
-import { FormInput } from "@/components/form/input";
-import { FormInputFile } from "@/components/form/input-file";
+import { FormInput } from "@/components/form/form-input";
+import { FormFile } from "@/components/form/form-file";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { billboardSchema } from "@/schemas/billboard";
@@ -56,7 +56,7 @@ export const EditBillboardForm: React.FC<EditBillboardFormProps> = (props) => {
             placeholder="e.g. This Is My Example Billboard Label"
             isLoading={isLoading}
           />
-          <FormInputFile
+          <FormFile
             control={form.control}
             name="imageUrl"
             label="Image"

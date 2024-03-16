@@ -1,6 +1,6 @@
 "use client";
 
-import { FormInput } from "@/components/form/input";
+import { FormInput } from "@/components/form/form-input";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Heading } from "@/components/ui/heading";
