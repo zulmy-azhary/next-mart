@@ -20,9 +20,9 @@ export default async function BillboardsPage({ params }: BillboardsPageProps) {
     },
   });
 
-  const formattedBillboards = billboards.map((item) => ({
-    ...item,
-    createdAt: format(item.createdAt, "MMMM do, yyyy"),
+  const formattedBillboards = billboards.map((billboard) => ({
+    ...billboard,
+    createdAt: format(billboard.createdAt, "MMMM do, yyyy"),
   }));
   
   return <BillboardsSection billboards={formattedBillboards} />;
