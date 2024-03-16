@@ -6,7 +6,7 @@ import { ImageUpload } from "@/components/ui/image-upload";
 type FormInputFileProps<TValues extends FieldValues> = React.ComponentPropsWithRef<"button"> & {
   control: Control<TValues>;
   name: Path<TValues>;
-  label: string;
+  label?: string;
   isLoading?: boolean;
 };
 
@@ -19,7 +19,7 @@ export const FormInputFile = <TValues extends FieldValues>(props: FormInputFileP
       name={name}
       render={({ field, fieldState }) => (
         <FormItem>
-          <FormLabel className="block">{label}</FormLabel>
+          {label ? <FormLabel>{label}</FormLabel> : null}
           <FormControl>
             <ImageUpload
               {...field}

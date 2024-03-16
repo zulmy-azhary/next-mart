@@ -6,19 +6,20 @@ import { cn } from "@/lib/utils";
 type FormInputProps<T extends FieldValues> = React.ComponentPropsWithRef<"input"> & {
   control: Control<T>;
   name: Path<T>;
-  label: string;
+  label?: string;
   isLoading?: boolean;
 };
 
 export const FormInput = <TValues extends FieldValues>(props: FormInputProps<TValues>) => {
   const { control, name, label, isLoading, disabled, ...rest } = props;
+  
   return (
     <FormField
       control={control}
       name={name}
       render={({ field, fieldState }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          {label ? <FormLabel>{label}</FormLabel> : null}
           <FormControl>
             <Input
               {...field}
