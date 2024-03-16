@@ -19,7 +19,6 @@ export const ImageUpload = forwardRef<HTMLButtonElement, ImageUploadProps>((prop
   const { onChange, onRemove, url, ...rest } = props;
 
   const onComplete = (res: ClientUploadedFileData<{ uploadedBy: string }>[]) => {
-    console.log("Files: ", res);
     onChange(res[0].url);
   };
 
