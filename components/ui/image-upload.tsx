@@ -7,7 +7,6 @@ import { forwardRef } from "react";
 import { UploadDropzone } from "@/lib/uploadthing";
 import { ClientUploadedFileData } from "uploadthing/types";
 import { toast } from "sonner";
-import axios from "axios";
 
 type ImageUploadProps = Omit<React.ComponentProps<typeof Button>, "onChange"> & {
   onChange: (value: string) => void;
@@ -26,15 +25,8 @@ export const ImageUpload = forwardRef<HTMLButtonElement, ImageUploadProps>((prop
     toast.error(`ERROR! ${error.message}`);
   };
 
-  const onRemoveHandler = async () => {
-    try {
-      await axios.delete("/api/uploadthing", {
-        data: { url },
-      });
-      onRemove(url);
-    } catch (error) {
-      toast.error((error as Error).message);
-    }
+  const onRemoveHandler = () => {
+    onRemove(url);
   };
 
   return !!url ? (
@@ -54,7 +46,14 @@ export const ImageUpload = forwardRef<HTMLButtonElement, ImageUploadProps>((prop
             <LuTrash className="size-4" />
           </Button>
         </div>
-        <Image fill priority className="object-cover select-none" sizes="auto" src={url} alt="Image upload" />
+        <Image
+          fill
+          priority
+          className="object-cover select-none"
+          sizes="auto"
+          src={url}
+          alt="Image upload"
+        />
       </div>
     </div>
   ) : (
