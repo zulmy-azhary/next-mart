@@ -18,16 +18,29 @@ model Store {
   name       String
   userId     String
   billboards Billboard[] @relation(name: "StoreToBillboard")
+  categories Category[]  @relation(name: "StoreToCategory")
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
 }
 
 model Billboard {
-  id        String   @id @default(cuid())
-  storeId   String
-  store     Store    @relation(name: "StoreToBillboard", fields: [storeId], references: [id], onDelete: Cascade)
-  label     String
-  imageUrl  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String     @id @default(cuid())
+  storeId    String
+  store      Store      @relation(name: "StoreToBillboard", fields: [storeId], references: [id], onDelete: Cascade)
+  label      String
+  imageUrl   String
+  categories Category[] @relation(name: "BillboardToCategory")
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  storeId     String
+  store       Store     @relation(name: "StoreToCategory", fields: [storeId], references: [id], onDelete: Cascade)
+  billboardId String
+  billboard   Billboard @relation(name: "BillboardToCategory", fields: [billboardId], references: [id], onDelete: Cascade)
+  name        String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
