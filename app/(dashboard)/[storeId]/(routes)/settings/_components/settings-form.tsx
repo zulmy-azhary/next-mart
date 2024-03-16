@@ -15,15 +15,19 @@ import { ApiClipboard } from "@/components/ui/api-clipboard";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { DeleteStoreModal } from "./delete-store-modal";
+import { DeleteModal } from "@/components/modals/delete-modal";
 import { Section, SectionContent, SectionHeader } from "@/components/ui/section";
+import { LuTrash2 } from "react-icons/lu";
 
 type SettingsFormProps = {
   store: Store;
 };
 
-export const SettingsForm: React.FC<SettingsFormProps> = ({ store }) => {
+export const SettingsForm: React.FC<SettingsFormProps> = (props) => {
+  const { store } = props;
+
   const [isLoading, setLoading] = useState(false);
+  const [isOpen, setOpen] = useState(false);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof storeSchema>>({
@@ -52,8 +56,8 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ store }) => {
         throw new Error("Store is already updated.");
       }
       await axios.patch(`/api/stores/${store.id}`, values);
-      router.refresh();
       toast.success("Store updated.");
+      router.refresh();
     } catch (error) {
       toast.error((error as Error).message);
     } finally {
@@ -65,11 +69,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ store }) => {
     <Section>
       <SectionHeader>
         <Heading title="Settings" description="Manage store settings and preferences" />
-        <DeleteStoreModal
-          title="Delete Store"
-          description="Are you sure you want to delete this store? This action cannot be undone."
-          onClick={onDelete}
-        />
+        <Button variant="destructive" onClick={() => setOpen(true)}>
+          <LuTrash2 className="mr-2 size-4" /> Delete Store
+        </Button>
       </SectionHeader>
       <Separator />
       <SectionContent>
@@ -99,6 +101,14 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ store }) => {
           text={`${process.env.NEXT_PUBLIC_API_URL}/api/${store.id}`}
         />
       </SectionContent>
+      <DeleteModal
+        title="Delete Store"
+        description="Are you sure you want to delete this store? This action cannot be undone."
+        isLoading={isLoading}
+        isOpen={isOpen}
+        onClose={() => setOpen(false)}
+        onSubmit={onDelete}
+      />
     </Section>
   );
 };
