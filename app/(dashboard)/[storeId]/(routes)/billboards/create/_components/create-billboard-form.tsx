@@ -32,8 +32,8 @@ export const CreateBillboardForm: React.FC = () => {
       setLoading(true);
       await axios.post(`/api/${storeId}/billboards`, values);
       toast.success("Billboard created.");
-      router.refresh();
       router.push(`/${storeId}/billboards`);
+      router.refresh();
     } catch (error) {
       toast.error((error as Error).message);
     } finally {
