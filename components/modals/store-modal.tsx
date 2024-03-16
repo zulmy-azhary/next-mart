@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { storeSchema } from "@/schemas/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { z } from "zod";
-import { FormInput } from "@/components/form/input";
+import { FormInput } from "@/components/form/form-input";
 import { Form } from "@/components/ui/form";
 import { useState } from "react";
 import axios from "axios";
@@ -15,7 +15,7 @@ import axios from "axios";
 export const StoreModal = () => {
   const { isOpen, onClose } = useStoreModal();
   const [isLoading, setLoading] = useState(false);
-  
+
   const form = useForm<z.infer<typeof storeSchema>>({
     resolver: zodResolver(storeSchema),
     mode: "onChange",
