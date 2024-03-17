@@ -27,7 +27,7 @@ export default async function EditBillboardPage({ params }: EditBillboardPagePro
   });
 
   if (!billboard) {
-    redirect(`/${params.storeId}/billboards`);
+    redirect(`/${storeId}/billboards`);
   }
 
   return (

@@ -11,9 +11,11 @@ export const metadata: Metadata = {
 type BillboardsPageProps = Params<{ storeId: string }>;
 
 export default async function BillboardsPage({ params }: BillboardsPageProps) {
+  const { storeId } = params;
+  
   const billboards = await db.billboard.findMany({
     where: {
-      storeId: params.storeId,
+      storeId,
     },
     orderBy: {
       createdAt: "desc",

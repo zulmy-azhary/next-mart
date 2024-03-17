@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 type SettingsPageProps = Params<{ storeId: string }>;
 
 export default async function SettingsPage({ params }: SettingsPageProps) {
+  const { storeId } = params;
   const { userId } = auth();
 
   if (!userId) {
@@ -20,7 +21,7 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
 
   const store = await db.store.findUnique({
     where: {
-      id: params.storeId,
+      id: storeId,
       userId,
     },
   });
