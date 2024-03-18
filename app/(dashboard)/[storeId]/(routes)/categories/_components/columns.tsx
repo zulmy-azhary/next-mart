@@ -5,8 +5,6 @@ import type { Category } from "@prisma/client";
 import { CellAction } from "./cell-action";
 
 export type CategoryColumnType = Pick<Category, "id" | "name"> & {
-  id: string;
-  name: string;
   billboardLabel: string;
   createdAt: string;
 };
