@@ -38,8 +38,8 @@ export const PATCH = async (req: Request, { params }: Params<{ storeId: string; 
     }
 
     if (!params.id) {
-      logger.error(`[${METHOD}] ${PATH} = Category id is required.`);
-      return new NextResponse("Category id is required.", { status: 400 });
+      logger.error(`[${METHOD}] ${PATH} = Size id is required.`);
+      return new NextResponse("Size id is required.", { status: 400 });
     }
 
     const storeByUserId = await db.store.findFirst({
