@@ -39,9 +39,9 @@ export const CreateCategoryForm: React.FC<CreateCategoryFormProps> = (props) => 
     try {
       setLoading(true);
       await axios.post(`/api/${storeId}/categories`, values);
-      toast.success("Category created.");
       router.push(`/${storeId}/categories`);
       router.refresh();
+      toast.success("Category created.");
     } catch (err) {
       toast.error((err as Error).message);
     } finally {
@@ -52,7 +52,7 @@ export const CreateCategoryForm: React.FC<CreateCategoryFormProps> = (props) => 
   return (
     <Form {...form}>
       <form onSubmit={onSubmit} className="space-y-6">
-        <div className="md:grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+        <div className="md:grid md:grid-cols-2 xl:grid-cols-3 md:gap-8 space-y-4 md:space-y-0">
           <FormInput
             control={form.control}
             name="name"
