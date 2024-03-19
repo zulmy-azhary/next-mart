@@ -1,6 +1,6 @@
+import type { Params } from "@/types";
 import type { Metadata } from "next";
 import { CategoriesSection } from "./_components/categories-section";
-import type { Params } from "@/types";
 import { db } from "@/lib/db";
 import { format } from "date-fns";
 

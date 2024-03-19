@@ -14,18 +14,18 @@ import { RxDotsHorizontal } from "react-icons/rx";
 import { FiEdit3 } from "react-icons/fi";
 import { toast } from "sonner";
 import { useParams, useRouter } from "next/navigation";
-import type { CategoryColumnType } from "./columns";
+import type { BillboardColumn } from "./columns";
 import { useState } from "react";
 import { DeleteModal } from "@/components/modals/delete-modal";
+import Image from "next/image";
 import axios from "axios";
 
 type CellActionProps = {
-  category: CategoryColumnType;
+  billboard: BillboardColumn;
 };
 
 export const CellAction: React.FC<CellActionProps> = (props) => {
-  const { category } = props;
-
+  const { billboard } = props;
   const [isOpen, setOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
@@ -34,19 +34,19 @@ export const CellAction: React.FC<CellActionProps> = (props) => {
 
   const onCopy = (text: string) => {
     navigator.clipboard.writeText(text);
-    toast.success("Category ID copied to clipboard.");
+    toast.success("Billboard ID copied to clipboard.");
   };
 
   const onEdit = () => {
-    router.push(`/${storeId}/categories/${category.id}`);
+    router.push(`/${storeId}/billboards/${billboard.id}`);
   };
 
   const onSubmit = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${storeId}/categories/${category.id}`);
+      await axios.delete(`/api/${storeId}/billboards/${billboard.id}`);
       router.refresh();
-      toast.success("Category deleted.");
+      toast.success("Billboard deleted.");
     } catch (error) {
       toast.error((error as Error).message);
     } finally {
@@ -67,7 +67,7 @@ export const CellAction: React.FC<CellActionProps> = (props) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => onCopy(category.id)}>
+          <DropdownMenuItem onClick={() => onCopy(billboard.id)}>
             <LuCopy className="size-4 mr-2" />
             Copy Id
           </DropdownMenuItem>
@@ -82,13 +82,24 @@ export const CellAction: React.FC<CellActionProps> = (props) => {
         </DropdownMenuContent>
       </DropdownMenu>
       <DeleteModal
-        title="Delete Category"
-        description="Are you sure you want to delete this category? This action cannot be undone."
+        title="Delete Billboard"
+        description="Are you sure you want to delete this billboard? This action cannot be undone."
         isLoading={isLoading}
         isOpen={isOpen}
         onClose={() => setOpen(false)}
         onSubmit={onSubmit}
-      />
+      >
+        <div className="relative w-full h-[150px] md:h-[350px] lg:h-[400px] xl:h-[450px] 2xl:h-[500px] aspect-video rounded-md overflow-hidden">
+          <Image
+            fill
+            priority
+            className="object-cover select-none"
+            sizes="auto"
+            src={billboard.imageUrl}
+            alt="Image upload"
+          />
+        </div>
+      </DeleteModal>
     </>
   );
 };

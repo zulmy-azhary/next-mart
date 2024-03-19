@@ -5,11 +5,11 @@ import { ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 import type { Size } from "@prisma/client";
 
-export type SizeColumnType = Pick<Size, "id" | "name" | "value"> & {
+export type SizeColumn = Pick<Size, "id" | "name" | "value"> & {
   createdAt: string;
 };
 
-export const columns: ColumnDef<SizeColumnType>[] = [
+export const columns: ColumnDef<SizeColumn>[] = [
   {
     accessorKey: "name",
     header: "Name",

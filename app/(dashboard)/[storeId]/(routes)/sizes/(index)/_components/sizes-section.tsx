@@ -8,10 +8,10 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { IoAddOutline } from "react-icons/io5";
-import { SizeColumnType, columns } from "./columns";
+import { type SizeColumn, columns } from "./columns";
 
 type SizesSectionProps = {
-  sizes: SizeColumnType[];
+  sizes: SizeColumn[];
 };
 
 export const SizesSection: React.FC<SizesSectionProps> = ({ sizes }) => {

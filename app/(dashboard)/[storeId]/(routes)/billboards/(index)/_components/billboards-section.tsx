@@ -8,32 +8,32 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { IoAddOutline } from "react-icons/io5";
-import { type CategoryColumnType, columns } from "./columns";
+import { type BillboardColumn, columns } from "./columns";
 
-type CategoriesSectionProps = {
-  billboards: CategoryColumnType[];
+type BillboardsSectionProps = {
+  billboards: BillboardColumn[];
 };
 
-export const CategoriesSection: React.FC<CategoriesSectionProps> = ({ billboards }) => {
+export const BillboardsSection: React.FC<BillboardsSectionProps> = ({ billboards }) => {
   const { storeId } = useParams<{ storeId: string }>();
 
   return (
     <Section>
       <SectionHeader>
         <Heading
-          title={`Categories (${billboards.length})`}
-          description="Manage categories for your store"
+          title={`Billboards (${billboards.length})`}
+          description="Manage billboards for your store"
         />
         <Button variant="primary" asChild>
-          <Link href={`/${storeId}/categories/create`}>
+          <Link href={`/${storeId}/billboards/create`}>
             <IoAddOutline className="mr-2 size-4" />
-            Add Category
+            Add Billboard
           </Link>
         </Button>
       </SectionHeader>
       <Separator />
       <SectionContent>
-        <DataTable searchKey="name" columns={columns} data={billboards} />
+        <DataTable searchKey="label" columns={columns} data={billboards} />
       </SectionContent>
     </Section>
   );

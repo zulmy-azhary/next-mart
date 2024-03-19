@@ -4,12 +4,12 @@ import type { ColumnDef } from "@tanstack/react-table";
 import type { Category } from "@prisma/client";
 import { CellAction } from "./cell-action";
 
-export type CategoryColumnType = Pick<Category, "id" | "name"> & {
+export type CategoryColumn = Pick<Category, "id" | "name"> & {
   billboardLabel: string;
   createdAt: string;
 };
 
-export const columns: ColumnDef<CategoryColumnType>[] = [
+export const columns: ColumnDef<CategoryColumn>[] = [
   {
     accessorKey: "name",
     header: "Category Name",

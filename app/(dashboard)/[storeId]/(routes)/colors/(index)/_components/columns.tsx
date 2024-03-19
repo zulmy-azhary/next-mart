@@ -5,11 +5,11 @@ import { ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 import type { Color } from "@prisma/client";
 
-export type ColorColumnType = Pick<Color, "id" | "name" | "value"> & {
+export type ColorColumn = Pick<Color, "id" | "name" | "value"> & {
   createdAt: string;
 };
 
-export const columns: ColumnDef<ColorColumnType>[] = [
+export const columns: ColumnDef<ColorColumn>[] = [
   {
     accessorKey: "name",
     header: "Name",

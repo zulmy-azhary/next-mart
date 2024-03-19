@@ -8,10 +8,10 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { IoAddOutline } from "react-icons/io5";
-import { type ColorColumnType, columns } from "./columns";
+import { type ColorColumn, columns } from "./columns";
 
 type ColorsSectionProps = {
-  colors: ColorColumnType[];
+  colors: ColorColumn[];
 };
 
 export const ColorsSection: React.FC<ColorsSectionProps> = ({ colors }) => {

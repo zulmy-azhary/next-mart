@@ -14,13 +14,13 @@ import { RxDotsHorizontal } from "react-icons/rx";
 import { FiEdit3 } from "react-icons/fi";
 import { toast } from "sonner";
 import { useParams, useRouter } from "next/navigation";
-import type { SizeColumnType } from "./columns";
+import type { SizeColumn } from "./columns";
 import { useState } from "react";
 import { DeleteModal } from "@/components/modals/delete-modal";
 import axios from "axios";
 
 type CellActionProps = {
-  size: SizeColumnType;
+  size: SizeColumn;
 };
 
 export const CellAction: React.FC<CellActionProps> = (props) => {

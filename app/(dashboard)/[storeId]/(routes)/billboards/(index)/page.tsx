@@ -1,6 +1,6 @@
+import type { Params } from "@/types";
 import type { Metadata } from "next";
 import { BillboardsSection } from "./_components/billboards-section";
-import type { Params } from "@/types";
 import { db } from "@/lib/db";
 import { format } from "date-fns";
 
