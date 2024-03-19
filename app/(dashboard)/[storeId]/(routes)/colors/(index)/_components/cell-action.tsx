@@ -82,8 +82,8 @@ export const CellAction: React.FC<CellActionProps> = (props) => {
         </DropdownMenuContent>
       </DropdownMenu>
       <DeleteModal
-        title="Delete Size"
-        description="Are you sure you want to delete this size? This action cannot be undone."
+        title="Delete Color"
+        description="Are you sure you want to delete this color? This action cannot be undone."
         isLoading={isLoading}
         isOpen={isOpen}
         onClose={() => setOpen(false)}

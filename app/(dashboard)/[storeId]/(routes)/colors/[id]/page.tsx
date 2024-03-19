@@ -32,7 +32,7 @@ export default async function EditColorPage({ params }: EditColorPageProps) {
   return (
     <Section>
       <SectionHeader>
-        <Heading title="Edit Size" description="Edit an existing color" />
+        <Heading title="Edit Color" description="Edit an existing color" />
         <Button asChild>
           <Link href={`/${storeId}/colors`}>
             <IoArrowBackOutline className="mr-2 size-4" />
