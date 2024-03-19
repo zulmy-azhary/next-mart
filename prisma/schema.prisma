@@ -17,52 +17,103 @@ model Store {
   id         String      @id @default(cuid())
   name       String
   userId     String
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  // Relation
   billboards Billboard[] @relation(name: "StoreToBillboard")
   categories Category[]  @relation(name: "StoreToCategory")
   sizes      Size[]      @relation(name: "StoreToSize")
   colors     Color[]     @relation(name: "StoreToColor")
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
+  products   Product[]   @relation(name: "StoreToProduct")
 }
 
 model Billboard {
   id         String     @id @default(cuid())
-  storeId    String
-  store      Store      @relation(name: "StoreToBillboard", fields: [storeId], references: [id], onDelete: Cascade)
   label      String
   imageUrl   String
-  categories Category[] @relation(name: "BillboardToCategory")
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
+  // Relation
+  storeId    String // FK to Store model
+  store      Store      @relation(name: "StoreToBillboard", fields: [storeId], references: [id], onDelete: Cascade)
+  categories Category[] @relation(name: "BillboardToCategory")
+
+  @@index([storeId])
 }
 
 model Category {
   id          String    @id @default(cuid())
-  storeId     String
-  store       Store     @relation(name: "StoreToCategory", fields: [storeId], references: [id], onDelete: Cascade)
-  billboardId String
-  billboard   Billboard @relation(name: "BillboardToCategory", fields: [billboardId], references: [id], onDelete: Cascade)
   name        String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  // Relation
+  storeId     String // FK to Store model
+  store       Store     @relation(name: "StoreToCategory", fields: [storeId], references: [id], onDelete: Cascade)
+  billboardId String // FK to Billboard model
+  billboard   Billboard @relation(name: "BillboardToCategory", fields: [billboardId], references: [id], onDelete: Cascade)
+  products    Product[] @relation(name: "CategoryToProduct")
+
+  @@index([storeId, billboardId])
 }
 
 model Size {
-  id        String   @id @default(cuid())
-  storeId   String
-  store     Store    @relation(name: "StoreToSize", fields: [storeId], references: [id], onDelete: Cascade)
+  id        String    @id @default(cuid())
   name      String
   value     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  // Relation
+  storeId   String // FK to Store model
+  store     Store     @relation(name: "StoreToSize", fields: [storeId], references: [id], onDelete: Cascade)
+  products  Product[] @relation(name: "SizeToProduct")
+
+  @@index([storeId])
 }
 
 model Color {
-  id        String   @id @default(cuid())
-  storeId   String
-  store     Store    @relation(name: "StoreToColor", fields: [storeId], references: [id], onDelete: Cascade)
+  id        String    @id @default(cuid())
   name      String
   value     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  // Relation
+  storeId   String // FK to Store model
+  store     Store     @relation(name: "StoreToColor", fields: [storeId], references: [id], onDelete: Cascade)
+  products  Product[] @relation(name: "ColorToProduct")
+
+  @@index([storeId])
+}
+
+model Product {
+  id         String   @id @default(cuid())
+  name       String
+  price      Decimal
+  isFeatured Boolean  @default(false)
+  isArchived Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  // Relation
+  storeId    String // FK to Store model
+  store      Store    @relation(name: "StoreToProduct", fields: [storeId], references: [id], onDelete: Cascade)
+  categoryId String // FK to Category model
+  category   Category @relation(name: "CategoryToProduct", fields: [categoryId], references: [id], onDelete: Cascade)
+  sizeId     String // FK to Size model
+  size       Size     @relation(name: "SizeToProduct", fields: [sizeId], references: [id], onDelete: Cascade)
+  colorId    String // FK to Color model
+  color      Color    @relation(name: "ColorToProduct", fields: [colorId], references: [id], onDelete: Cascade)
+  images     Image[]  @relation(name: "ProductToImage")
+
+  @@index([storeId, categoryId, sizeId, colorId])
+}
+
+model Image {
+  id        String   @id @default(cuid())
+  url       String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  // Relation
+  productId String // FK to Product model
+  product   Product  @relation(name: "ProductToImage", fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
 }
