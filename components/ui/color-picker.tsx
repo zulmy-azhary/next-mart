@@ -85,16 +85,18 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
             />
           ))}
           <Input
-            id="custom"
+            {...props}
+            id="custom-colorpicker"
             value={background}
             className="col-span-2 h-8 mt-4"
             placeholder="e.g. #FFFFFF"
             onChange={(e) => setBackground(e.currentTarget.value.toUpperCase())}
             ref={ref}
-            {...props}
           />
         </PopoverContent>
       </Popover>
     );
   }
 );
+
+ColorPicker.displayName = "ColorPicker";
