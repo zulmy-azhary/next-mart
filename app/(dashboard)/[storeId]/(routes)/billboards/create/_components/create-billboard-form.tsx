@@ -52,12 +52,7 @@ export const CreateBillboardForm: React.FC = () => {
             placeholder="e.g. This Is My Example Billboard Label"
             isLoading={isLoading}
           />
-          <FormFile
-            control={form.control}
-            name="imageUrl"
-            label="Image"
-            isLoading={isLoading}
-          />
+          <FormFile control={form.control} name="imageUrl" label="Image" disabled={isLoading} />
         </div>
         <Button type="submit" variant="primary" disabled={isLoading}>
           Create
