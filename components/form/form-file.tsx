@@ -7,11 +7,10 @@ type FormFileProps<TValues extends FieldValues> = React.ComponentPropsWithRef<"b
   control: Control<TValues>;
   name: Path<TValues>;
   label?: string;
-  isLoading?: boolean;
 };
 
 export const FormFile = <TValues extends FieldValues>(props: FormFileProps<TValues>) => {
-  const { control, name, label, isLoading, disabled, ...rest } = props;
+  const { control, name, label, className, ...rest } = props;
 
   return (
     <FormField
@@ -24,11 +23,17 @@ export const FormFile = <TValues extends FieldValues>(props: FormFileProps<TValu
             <ImageUpload
               {...field}
               {...rest}
-              url={field.value}
+              endpoint="imageUploader"
+              value={field.value ? [field.value] : []}
               onRemove={() => field.onChange("")}
-              onChange={(url: string) => field.onChange(url)}
-              className={cn(fieldState.error && "border border-red-500")}
-              disabled={isLoading || disabled}
+              onChange={(
+                res: Parameters<React.ComponentProps<typeof ImageUpload>["onChange"]>[number]
+              ) => field.onChange(res[0].url)}
+              className={cn(
+                fieldState.error && "border border-red-500",
+                className,
+                "col-span-full w-full h-[150px] md:h-[350px] lg:h-[400px] xl:h-[450px] 2xl:h-[500px] aspect-video"
+              )}
             />
           </FormControl>
           <FormMessage className="text-xs" />
