@@ -34,10 +34,10 @@ export const EditBillboardForm: React.FC<EditBillboardFormProps> = (props) => {
   const onSubmit = form.handleSubmit(async (values) => {
     try {
       setLoading(true);
-      await axios.patch(`/api/${storeId}/billboards/${id}`, values);
+      const response = await axios.patch(`/api/${storeId}/billboards/${id}`, values);
+      toast.success(response.data.message);
       router.push(`/${storeId}/billboards`);
       router.refresh();
-      toast.success("Billboard updated.");
     } catch (error) {
       toast.error((error as Error).message);
     } finally {
