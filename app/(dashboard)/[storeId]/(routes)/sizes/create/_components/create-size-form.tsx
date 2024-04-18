@@ -29,10 +29,10 @@ export const CreateSizeForm: React.FC = () => {
   const onSubmit = form.handleSubmit(async (values) => {
     try {
       setLoading(true);
-      await axios.post(`/api/${storeId}/sizes`, values);
+      const response = await axios.post(`/api/${storeId}/sizes`, values);
+      toast.success(response.data.message);
       router.push(`/${storeId}/sizes`);
       router.refresh();
-      toast.success("Size created.");
     } catch (err) {
       toast.error((err as Error).message);
     } finally {

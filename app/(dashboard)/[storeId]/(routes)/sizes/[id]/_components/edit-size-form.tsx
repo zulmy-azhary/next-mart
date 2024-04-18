@@ -33,10 +33,10 @@ export const EditSizeForm: React.FC<EditSizeFormProps> = (props) => {
   const onSubmit = form.handleSubmit(async (values) => {
     try {
       setLoading(true);
-      await axios.patch(`/api/${storeId}/sizes/${id}`, values);
+      const response = await axios.patch(`/api/${storeId}/sizes/${id}`, values);
+      toast.success(response.data.message);
       router.push(`/${storeId}/sizes`);
       router.refresh();
-      toast.success("Size updated.");
     } catch (err) {
       toast.error((err as Error).message);
     } finally {
