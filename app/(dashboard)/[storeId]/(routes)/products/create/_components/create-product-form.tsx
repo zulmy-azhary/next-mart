@@ -50,10 +50,10 @@ export const CreateProductForm: React.FC<CreateProductFormProps> = (props) => {
   const onSubmit = form.handleSubmit(async (values) => {
     try {
       setLoading(true);
-      await axios.post(`/api/${storeId}/products`, values);
+      const response = await axios.post(`/api/${storeId}/products`, values);
+      toast.success(response.data.message);
       router.push(`/${storeId}/products`);
       router.refresh();
-      toast.success("Product created.");
     } catch (err) {
       toast.error((err as Error).message);
     } finally {

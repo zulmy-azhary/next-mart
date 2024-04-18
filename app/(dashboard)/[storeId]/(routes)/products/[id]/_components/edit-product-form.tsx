@@ -46,10 +46,10 @@ export const EditProductForm: React.FC<EditProductFormProps> = (props) => {
   const onSubmit = form.handleSubmit(async (values) => {
     try {
       setLoading(true);
-      await axios.patch(`/api/${storeId}/products/${id}`, values);
+      const response = await axios.patch(`/api/${storeId}/products/${id}`, values);
+      toast.success(response.data.message);
       router.push(`/${storeId}/products`);
       router.refresh();
-      toast.success("Product updated.");
     } catch (err) {
       toast.error((err as Error).message);
     } finally {
