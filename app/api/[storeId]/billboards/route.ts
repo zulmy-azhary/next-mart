@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { logger } from "@/lib/logger";
+import { catchException } from "@/lib/utils";
 import { billboardSchema } from "@/schemas/billboard";
 import type { Params } from "@/types";
 import { auth } from "@clerk/nextjs";
@@ -14,7 +15,10 @@ export const POST = async (req: Request, { params }: Params<{ storeId: string }>
 
   if (!validatedFields.success) {
     logger.error(`[${METHOD}] ${PATH} = Invalid fields.`);
-    return new NextResponse("Invalid fields.", { status: 422 });
+    return NextResponse.json(
+      { success: false, error: { message: "Invalid fields." } },
+      { status: 422 }
+    );
   }
 
   try {
@@ -23,7 +27,10 @@ export const POST = async (req: Request, { params }: Params<{ storeId: string }>
 
     if (!userId) {
       logger.error(`[${METHOD}] ${PATH} = Unauthorized.`);
-      return new NextResponse("Unauthorized.", { status: 401 });
+      return NextResponse.json(
+        { success: false, error: { message: "Unauthorized." } },
+        { status: 401 }
+      );
     }
 
     const storeByUserId = await db.store.findFirst({
@@ -35,7 +42,10 @@ export const POST = async (req: Request, { params }: Params<{ storeId: string }>
 
     if (!storeByUserId) {
       logger.error(`[${METHOD}] ${PATH} = Access denied.`);
-      return new NextResponse("Access denied.", { status: 403 });
+      return NextResponse.json(
+        { success: false, error: { message: "Access denied." } },
+        { status: 403 }
+      );
     }
 
     const billboard = await db.billboard.create({
@@ -47,10 +57,13 @@ export const POST = async (req: Request, { params }: Params<{ storeId: string }>
     });
 
     logger.info(`[${METHOD}] ${PATH} = Billboard created.`);
-    return NextResponse.json(billboard);
+    return NextResponse.json(
+      { success: true, message: "Billboard created.", data: billboard },
+      { status: 201 }
+    );
   } catch (error) {
     logger.error(`[${METHOD}] ${PATH} =`, error);
-    return new NextResponse((error as Error).message, { status: 500 });
+    catchException(error);
   }
 };
 
@@ -65,9 +78,9 @@ export const GET = async (req: Request, { params }: Params<{ storeId: string }>)
     });
 
     logger.info(`[${METHOD}] ${PATH} = Billboards retrieved.`);
-    return NextResponse.json(billboards);
+    return NextResponse.json({ success: true, data: billboards }, { status: 200 });
   } catch (error) {
     logger.error(`[${METHOD}] ${PATH} =`, error);
-    return new NextResponse((error as Error).message, { status: 500 });
+    catchException(error);
   }
 };
