@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { logger } from "@/lib/logger";
+import { catchException } from "@/lib/utils";
 import { storeSchema } from "@/schemas/store";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
@@ -45,10 +46,7 @@ export const POST = async (req: Request) => {
     );
   } catch (error: unknown) {
     logger.error(`[${METHOD}] ${PATH} =`, error);
-    return NextResponse.json(
-      { success: false, error: { message: (error as Error).message } },
-      { status: 500 }
-    );
+    catchException(error);
   }
 };
 
@@ -62,9 +60,6 @@ export const GET = async (req: Request) => {
     return NextResponse.json({ success: true, data: stores }, { status: 200 });
   } catch (error: unknown) {
     logger.error(`[${METHOD}] ${PATH} =`, error);
-    return NextResponse.json(
-      { success: false, error: { message: (error as Error).message } },
-      { status: 500 }
-    );
+    catchException(error);
   }
 };
