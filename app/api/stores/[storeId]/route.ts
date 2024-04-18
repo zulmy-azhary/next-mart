@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { logger } from "@/lib/logger";
+import { catchException } from "@/lib/utils";
 import { storeSchema } from "@/schemas/store";
 import type { Params } from "@/types";
 import { auth } from "@clerk/nextjs";
@@ -14,7 +15,10 @@ export const PATCH = async (req: Request, { params }: Params<{ storeId: string }
 
   if (!validatedFields.success) {
     logger.error(`[${METHOD}] ${PATH} = Invalid fields.`);
-    return new NextResponse("Invalid fields.", { status: 422 });
+    return NextResponse.json(
+      { success: false, error: { message: "Invalid fields." } },
+      { status: 422 }
+    );
   }
 
   try {
@@ -23,15 +27,13 @@ export const PATCH = async (req: Request, { params }: Params<{ storeId: string }
 
     if (!userId) {
       logger.error(`[${METHOD}] ${PATH} = Unauthorized.`);
-      return new NextResponse("Unauthorized.", { status: 401 });
+      return NextResponse.json(
+        { success: false, error: { message: "Unauthorized." } },
+        { status: 401 }
+      );
     }
 
-    if (!params.storeId) {
-      logger.error(`[${METHOD}] ${PATH} = Store id is required.`);
-      return new NextResponse("Store id is required.", { status: 403 });
-    }
-
-    const store = await db.store.updateMany({
+    await db.store.updateMany({
       where: {
         id: params.storeId,
         userId,
@@ -42,10 +44,10 @@ export const PATCH = async (req: Request, { params }: Params<{ storeId: string }
     });
 
     logger.info(`[${METHOD}] ${PATH} = Store updated.`);
-    return NextResponse.json(store);
-  } catch (error) {
+    return NextResponse.json({ success: true, message: "Store updated." }, { status: 200 });
+  } catch (error: unknown) {
     logger.error(`[${METHOD}] ${PATH} =`, error);
-    return new NextResponse((error as Error).message, { status: 500 });
+    catchException(error);
   }
 };
 
@@ -57,15 +59,13 @@ export const DELETE = async (req: Request, { params }: Params<{ storeId: string 
 
     if (!userId) {
       logger.error(`[${METHOD}] ${PATH} = Unauthorized.`);
-      return new NextResponse("Unauthorized.", { status: 401 });
+      return NextResponse.json(
+        { success: false, error: { message: "Unauthorized." } },
+        { status: 401 }
+      );
     }
 
-    if (!params.storeId) {
-      logger.error(`[${METHOD}] ${PATH} = Store id is required.`);
-      return new NextResponse("Store id is required.", { status: 403 });
-    }
-
-    const store = await db.store.deleteMany({
+    await db.store.deleteMany({
       where: {
         id: params.storeId,
         userId,
@@ -73,9 +73,9 @@ export const DELETE = async (req: Request, { params }: Params<{ storeId: string 
     });
 
     logger.info(`[${METHOD}] ${PATH} = Store deleted.`);
-    return NextResponse.json(store);
-  } catch (error) {
+    return NextResponse.json({ success: true, message: "Store deleted." }, { status: 200 });
+  } catch (error: unknown) {
     logger.error(`[${METHOD}] ${PATH} =`, error);
-    return new NextResponse((error as Error).message, { status: 500 });
+    catchException(error);
   }
 };
