@@ -38,10 +38,10 @@ export const CreateCategoryForm: React.FC<CreateCategoryFormProps> = (props) => 
   const onSubmit = form.handleSubmit(async (values) => {
     try {
       setLoading(true);
-      await axios.post(`/api/${storeId}/categories`, values);
+      const response = await axios.post(`/api/${storeId}/categories`, values);
+      toast.success(response.data.message);
       router.push(`/${storeId}/categories`);
       router.refresh();
-      toast.success("Category created.");
     } catch (err) {
       toast.error((err as Error).message);
     } finally {

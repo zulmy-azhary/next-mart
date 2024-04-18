@@ -36,10 +36,10 @@ export const EditCategoryForm: React.FC<EditCategoryFormProps> = (props) => {
   const onSubmit = form.handleSubmit(async (values) => {
     try {
       setLoading(true);
-      await axios.patch(`/api/${storeId}/categories/${id}`, values);
+      const response = await axios.patch(`/api/${storeId}/categories/${id}`, values);
+      toast.success(response.data.message);
       router.push(`/${storeId}/categories`);
       router.refresh();
-      toast.success("Category updated.");
     } catch (error) {
       toast.error((error as Error).message);
     } finally {
