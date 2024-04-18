@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { logger } from "@/lib/logger";
+import { catchException } from "@/lib/utils";
 import { sizeSchema } from "@/schemas/size";
 import type { Params } from "@/types";
 import { auth } from "@clerk/nextjs";
@@ -7,14 +8,35 @@ import { NextResponse } from "next/server";
 
 const PATH = "STORE_ID -> SIZES -> ID";
 
-export const GET = async (req: Request, { params }: Params<{ id: string }>) => {
+export const GET = async (req: Request, { params }: Params<{ storeId: string; id: string }>) => {
   const METHOD = req.method;
 
   try {
-    // Not implemented yet...
-  } catch (error) {
+    const size = await db.size.findUnique({
+      where: {
+        id: params.id,
+        storeId: params.storeId,
+      },
+    });
+
+    if (!size) {
+      logger.error(`[${METHOD}] ${PATH} = Size ${params.id} doesn't exist.`);
+      return NextResponse.json(
+        {
+          success: false,
+          error: {
+            message: "Size doesn't exist.",
+          },
+        },
+        { status: 404 }
+      );
+    }
+
+    logger.info(`[${METHOD}] ${PATH} = Size ${params.id} retrieved.`);
+    return NextResponse.json({ success: true, data: size }, { status: 200 });
+  } catch (error: unknown) {
     logger.error(`[${METHOD}] ${PATH} =`, error);
-    return new NextResponse((error as Error).message, { status: 500 });
+    catchException(error);
   }
 };
 
@@ -25,7 +47,10 @@ export const PATCH = async (req: Request, { params }: Params<{ storeId: string; 
 
   if (!validatedFields.success) {
     logger.error(`[${METHOD}] ${PATH} = Invalid fields.`);
-    return new NextResponse("Invalid fields.", { status: 422 });
+    return NextResponse.json(
+      { success: false, error: { message: "Invalid fields." } },
+      { status: 422 }
+    );
   }
 
   try {
@@ -34,12 +59,10 @@ export const PATCH = async (req: Request, { params }: Params<{ storeId: string; 
 
     if (!userId) {
       logger.error(`[${METHOD}] ${PATH} = Unauthorized.`);
-      return new NextResponse("Unauthorized.", { status: 401 });
-    }
-
-    if (!params.id) {
-      logger.error(`[${METHOD}] ${PATH} = Size id is required.`);
-      return new NextResponse("Size id is required.", { status: 400 });
+      return NextResponse.json(
+        { success: false, error: { message: "Unauthorized." } },
+        { status: 401 }
+      );
     }
 
     const storeByUserId = await db.store.findFirst({
@@ -51,12 +74,16 @@ export const PATCH = async (req: Request, { params }: Params<{ storeId: string; 
 
     if (!storeByUserId) {
       logger.error(`[${METHOD}] ${PATH} = Access denied.`);
-      return new NextResponse("Access denied.", { status: 403 });
+      return NextResponse.json(
+        { success: false, error: { message: "Access denied." } },
+        { status: 403 }
+      );
     }
 
     const size = await db.size.update({
       where: {
         id: params.id,
+        storeId: params.storeId,
       },
       data: {
         name,
@@ -65,10 +92,13 @@ export const PATCH = async (req: Request, { params }: Params<{ storeId: string; 
     });
 
     logger.info(`[${METHOD}] ${PATH} = Size updated.`);
-    return NextResponse.json(size);
-  } catch (error) {
+    return NextResponse.json(
+      { success: true, message: "Size updated.", data: size },
+      { status: 200 }
+    );
+  } catch (error: unknown) {
     logger.error(`[${METHOD}] ${PATH} =`, error);
-    return new NextResponse((error as Error).message, { status: 500 });
+    catchException(error);
   }
 };
 
@@ -80,7 +110,10 @@ export const DELETE = async (req: Request, { params }: Params<{ storeId: string;
 
     if (!userId) {
       logger.error(`[${METHOD}] ${PATH} = Unauthorized.`);
-      return new NextResponse("Unauthorized.", { status: 401 });
+      return NextResponse.json(
+        { success: false, error: { message: "Unauthorized." } },
+        { status: 401 }
+      );
     }
 
     const storeByUserId = await db.store.findFirst({
@@ -92,19 +125,23 @@ export const DELETE = async (req: Request, { params }: Params<{ storeId: string;
 
     if (!storeByUserId) {
       logger.error(`[${METHOD}] ${PATH} = Access denied.`);
-      return new NextResponse("Access denied.", { status: 403 });
+      return NextResponse.json(
+        { success: false, error: { message: "Access denied." } },
+        { status: 403 }
+      );
     }
 
-    const size = await db.size.delete({
+    await db.size.delete({
       where: {
         id: params.id,
+        storeId: params.storeId,
       },
     });
 
     logger.info(`[${METHOD}] ${PATH} = Size deleted.`);
-    return NextResponse.json(size);
-  } catch (error) {
+    return NextResponse.json({ success: true, message: "Size deleted." }, { status: 200 });
+  } catch (error: unknown) {
     logger.error(`[${METHOD}] ${PATH} =`, error);
-    return new NextResponse((error as Error).message, { status: 500 });
+    catchException(error);
   }
 };
