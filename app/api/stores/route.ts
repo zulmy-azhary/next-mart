@@ -13,7 +13,10 @@ export const POST = async (req: Request) => {
 
   if (!validatedFields.success) {
     logger.error(`[${METHOD}] ${PATH} = Invalid fields.`);
-    return new NextResponse("Invalid fields.", { status: 422 });
+    return NextResponse.json(
+      { success: false, error: { message: "Invalid fields." } },
+      { status: 422 }
+    );
   }
 
   try {
@@ -22,20 +25,46 @@ export const POST = async (req: Request) => {
 
     if (!userId) {
       logger.error(`[${METHOD}] ${PATH} = Unauthorized.`);
-      return new NextResponse("Unauthorized.", { status: 401 });
+      return NextResponse.json(
+        { success: false, error: { message: "Unauthorized." } },
+        { status: 401 }
+      );
     }
 
     const store = await db.store.create({
       data: {
         name,
-        userId
-      }
+        userId,
+      },
     });
 
     logger.info(`[${METHOD}] ${PATH} = Store created.`);
-    return NextResponse.json(store);
-  } catch (error) {
+    return NextResponse.json(
+      { success: true, message: "Store created.", data: store },
+      { status: 201 }
+    );
+  } catch (error: unknown) {
     logger.error(`[${METHOD}] ${PATH} =`, error);
-    return new NextResponse((error as Error).message, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: { message: (error as Error).message } },
+      { status: 500 }
+    );
+  }
+};
+
+export const GET = async (req: Request) => {
+  const METHOD = req.method;
+
+  try {
+    const stores = await db.store.findMany();
+
+    logger.info(`[${METHOD}] ${PATH} = Stores retrieved.`);
+    return NextResponse.json({ success: true, data: stores }, { status: 200 });
+  } catch (error: unknown) {
+    logger.error(`[${METHOD}] ${PATH} =`, error);
+    return NextResponse.json(
+      { success: false, error: { message: (error as Error).message } },
+      { status: 500 }
+    );
   }
 };
