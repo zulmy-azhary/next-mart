@@ -30,10 +30,10 @@ export const CreateColorForm: React.FC = () => {
   const onSubmit = form.handleSubmit(async (values) => {
     try {
       setLoading(true);
-      await axios.post(`/api/${storeId}/colors`, values);
+      const response = await axios.post(`/api/${storeId}/colors`, values);
+      toast.success(response.data.message);
       router.push(`/${storeId}/colors`);
       router.refresh();
-      toast.success("Color created.");
     } catch (err) {
       toast.error((err as Error).message);
     } finally {

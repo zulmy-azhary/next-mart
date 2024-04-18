@@ -34,10 +34,10 @@ export const EditColorForm: React.FC<EditColorFormProps> = (props) => {
   const onSubmit = form.handleSubmit(async (values) => {
     try {
       setLoading(true);
-      await axios.patch(`/api/${storeId}/colors/${id}`, values);
+      const response = await axios.patch(`/api/${storeId}/colors/${id}`, values);
+      toast.success(response.data.message);
       router.push(`/${storeId}/colors`);
       router.refresh();
-      toast.success("Color updated.");
     } catch (err) {
       toast.error((err as Error).message);
     } finally {
