@@ -39,9 +39,9 @@ export const SettingsForm: React.FC<SettingsFormProps> = (props) => {
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/stores/${store.id}`);
+      const response = await axios.delete(`/api/stores/${store.id}`);
+      toast.success(response.data.message);
       router.refresh();
-      toast.success("Store deleted.");
     } catch (error) {
       toast.error((error as Error).message);
     } finally {
@@ -55,8 +55,8 @@ export const SettingsForm: React.FC<SettingsFormProps> = (props) => {
       if (values.name === store.name) {
         throw new Error("Store is already updated.");
       }
-      await axios.patch(`/api/stores/${store.id}`, values);
-      toast.success("Store updated.");
+      const response = await axios.patch(`/api/stores/${store.id}`, values);
+      toast.success(response.data.message);
       router.refresh();
     } catch (error) {
       toast.error((error as Error).message);
