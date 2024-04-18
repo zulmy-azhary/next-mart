@@ -25,7 +25,7 @@ export const GET = async (req: Request, { params }: Params<{ storeId: string; id
         {
           success: false,
           error: {
-            message: "Color doesn't exist",
+            message: "Color doesn't exist.",
           },
         },
         { status: 404 }

@@ -26,7 +26,7 @@ export const GET = async (req: Request, { params }: Params<{ storeId: string; id
         {
           success: false,
           error: {
-            message: "Billboard doesn't exist",
+            message: "Billboard doesn't exist.",
           },
         },
         { status: 404 }

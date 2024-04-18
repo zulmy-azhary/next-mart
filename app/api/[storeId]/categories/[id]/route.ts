@@ -25,7 +25,7 @@ export const GET = async (req: Request, { params }: Params<{ storeId: string; id
         {
           success: false,
           error: {
-            message: "Category doesn't exist",
+            message: "Category doesn't exist.",
           },
         },
         { status: 404 }
