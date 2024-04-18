@@ -27,7 +27,7 @@ export const FormCheckbox = <TValues extends FieldValues>(props: FormCheckboxPro
       render={({ field, fieldState }) => (
         <FormItem>
           {label ? <FormLabel>{label}</FormLabel> : null}
-          <div className="flex flex-row items-center py-2 gap-x-2">
+          <div className="flex flex-row items-center gap-x-2">
             <FormControl>
               <Checkbox
                 {...rest}
