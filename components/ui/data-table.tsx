@@ -25,7 +25,7 @@ import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  searchKey: keyof TData;
+  searchKey: Exclude<keyof TData, "id">;
 };
 
 export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) => {
