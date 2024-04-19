@@ -50,6 +50,11 @@ export const MainNav: React.FC<MainNavProps> = (props) => {
       active: isActive(pathname, params.storeId, "products"),
     },
     {
+      href: `/${params.storeId}/orders`,
+      label: "Orders",
+      active: isActive(pathname, params.storeId, "orders"),
+    },
+    {
       href: `/${params.storeId}/settings`,
       label: "Settings",
       active: isActive(pathname, params.storeId, "settings"),
